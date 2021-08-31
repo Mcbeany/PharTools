@@ -4,9 +4,7 @@ PHP Archive (Phar) Extension for VS Code
 
 ## Features
 
-- [x] Added feature to create and extract Phar files
-- [ ] Display the content of a Phar file in a Tree Explorer
-- [ ] Import classes, properties, methods from Phar files for autocompletion
+- Added feature to create and extract Phar files
 
 ## Requirements
 
@@ -20,5 +18,9 @@ if you found find any bugs or errors when using this extension, please open issu
 
 # 0.0.1
  - Initial release.
+
+## TODO
+- Display the content of a Phar file in a Tree Explorer
+- Import classes, properties, methods from Phar files for autocompletion
 
 **Enjoy!**
