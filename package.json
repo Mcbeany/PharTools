@@ -3,6 +3,9 @@
 	"displayName": "PharTools",
 	"description": "PHP Archive (Phar) Extension for VS Code",
 	"version": "0.0.1",
+	"publisher": "Mcbeany",
+	"repository": "https://github.com/Mcbeany/PharTools",
+	"license": "MIT",
 	"engines": {
 		"vscode": "^1.59.0"
 	},
