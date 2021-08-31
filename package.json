@@ -1,0 +1,83 @@
+{
+	"name": "phartools",
+	"displayName": "PharTools",
+	"description": "PHP Archive (Phar) Extension for VS Code",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.59.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:phartools.createPharFromFolder",
+		"onCommand:phartools.createPharFromZip",
+		"onCommand:phartools.extractPharToFolder",
+		"onCommand:phartools.extractPharToZip"
+	],
+	"main": "./src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "phartools.createPharFromFolder",
+				"title": "Create Phar From Folder"
+			},
+			{
+				"command": "phartools.createPharFromZip",
+				"title": "Create Phar From Zip"
+			},
+			{
+				"command": "phartools.extractPharToFolder",
+				"title": "Extract Phar To Folder"
+			},
+			{
+				"command": "phartools.extractPharToZip",
+				"title": "Extract Phar To Zip"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "phartools.createPharFromFolder",
+					"group": "@phar",
+					"when": "explorerResourceIsFolder"
+				},
+				{
+					"command": "phartools.createPharFromZip",
+					"group": "@phar",
+					"when": "resourceExtname == .zip"
+				},
+				{
+					"command": "phartools.extractPharToFolder",
+					"group": "@phar",
+					"when": "resourceExtname == .phar"
+				},
+				{
+					"command": "phartools.extractPharToZip",
+					"group": "@phar",
+					"when": "resourceExtname == .phar"
+				}
+				
+			]
+		}
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.59.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.2.2",
+		"@types/node": "14.x",
+		"eslint": "^7.27.0",
+		"glob": "^7.1.7",
+		"mocha": "^8.4.0",
+		"typescript": "^4.3.2",
+		"vscode-test": "^1.5.2"
+	},
+	"dependencies": {
+		"phar": "^1.8.0"
+	}
+}
