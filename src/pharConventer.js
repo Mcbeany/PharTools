@@ -4,6 +4,10 @@ const path = require('path');
 const JSZip = require('jszip');
 const Phar = require('phar');
 
+const PHAR = ".phar";
+const ZIP = ".zip";
+const FOLDER = "";
+
 /**
  * @param {string} folder
  */
@@ -14,7 +18,7 @@ function createPharFromFolder(folder) {
     });
     zip.generateAsync({type: 'uint8array'}).then(data => {
         Phar.ZipConverter.toPhar(data).then(phar => {
-            let dir = getNewDir(folder, ".phar");
+            let dir = getNewDir(folder, ZIP);
             fs.writeFileSync(dir, phar.savePharData());
             vscode.window.showInformationMessage("Successfully created " + path.basename(dir));
         });
@@ -25,7 +29,7 @@ function createPharFromFolder(folder) {
  */
 function createPharFromZip(file) {
     Phar.ZipConverter.toPhar(fs.readFileSync(file)).then(phar => {
-        let dir = getNewDir(file, ".phar");
+        let dir = getNewDir(file, PHAR);
         fs.writeFileSync(dir, phar.savePharData());
         vscode.window.showInformationMessage("Successfully created " + path.basename(dir));
     });
@@ -37,7 +41,7 @@ function extractPharToFolder(file) {
     let phar = new Phar.Archive();
     phar.loadPharData(fs.readFileSync(file));
     Phar.ZipConverter.toZip(phar).then(zip => {
-        let dir = getNewDir(file, "");
+        let dir = getNewDir(file, FOLDER);
         fs.mkdirSync(dir);
         Object.keys(zip.files).forEach(name => {
             let filePath = path.join(dir, name);
@@ -61,7 +65,7 @@ function extractPharToZip(file) {
     phar.loadPharData(fs.readFileSync(file));
     Phar.ZipConverter.toZip(phar).then(data => {
         data.generateAsync({type: 'uint8array'}).then(zip => {
-            let dir = getNewDir(file, ".zip");
+            let dir = getNewDir(file, ZIP);
             fs.writeFileSync(dir, zip);
             vscode.window.showInformationMessage("Successfully extracted to " + path.basename(dir));
         });
@@ -75,11 +79,11 @@ function extractPharToZip(file) {
  */
 function getNewDir(file, ext) {
     let name = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-    let dir = name + ext;
+    let dir = name.concat(ext);
     let copyOf = 0; // var
     while (true) {
         if (copyOf != 0) {
-            dir = name + " (" + copyOf.toString() + ")" + ext
+            dir = name.concat(` (${copyOf})`, ext);
         }
         if (!fs.existsSync(dir) || (fs.lstatSync(dir).isDirectory() && fs.readdirSync(dir).length == 0)) {
             break;

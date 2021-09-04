@@ -6,6 +6,7 @@
 	"publisher": "Mcbeany",
 	"repository": "https://github.com/Mcbeany/PharTools",
 	"license": "MIT",
+	"icon": "https://static.thenounproject.com/png/2621404-200.png",
 	"engines": {
 		"vscode": "^1.59.0"
 	},
