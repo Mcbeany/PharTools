@@ -4,21 +4,19 @@ const path = require('path');
 const JSZip = require('jszip');
 const Phar = require('phar');
 
-const PHAR = ".phar";
-const ZIP = ".zip";
-const FOLDER = "";
+const Util = require('./util');
 
 /**
  * @param {string} folder
  */
 function createPharFromFolder(folder) {
     let zip = new JSZip();
-    readdirCompletely(folder).forEach(file => {
+    Util.readdirCompletely(folder).forEach(file => {
         zip.file(file.substr(folder.length + path.sep.length), fs.readFileSync(file));
     });
     zip.generateAsync({type: 'uint8array'}).then(data => {
         Phar.ZipConverter.toPhar(data).then(phar => {
-            let dir = getNewDir(folder, ZIP);
+            let dir = getNewDir(folder, Util.ZIP);
             fs.writeFileSync(dir, phar.savePharData());
             vscode.window.showInformationMessage("Successfully created " + path.basename(dir));
         });
@@ -29,7 +27,7 @@ function createPharFromFolder(folder) {
  */
 function createPharFromZip(file) {
     Phar.ZipConverter.toPhar(fs.readFileSync(file)).then(phar => {
-        let dir = getNewDir(file, PHAR);
+        let dir = getNewDir(file, Util.PHAR);
         fs.writeFileSync(dir, phar.savePharData());
         vscode.window.showInformationMessage("Successfully created " + path.basename(dir));
     });
@@ -41,7 +39,7 @@ function extractPharToFolder(file) {
     let phar = new Phar.Archive();
     phar.loadPharData(fs.readFileSync(file));
     Phar.ZipConverter.toZip(phar).then(zip => {
-        let dir = getNewDir(file, FOLDER);
+        let dir = getNewDir(file, Util.FOLDER);
         fs.mkdirSync(dir);
         Object.keys(zip.files).forEach(name => {
             let filePath = path.join(dir, name);
@@ -65,7 +63,7 @@ function extractPharToZip(file) {
     phar.loadPharData(fs.readFileSync(file));
     Phar.ZipConverter.toZip(phar).then(data => {
         data.generateAsync({type: 'uint8array'}).then(zip => {
-            let dir = getNewDir(file, ZIP);
+            let dir = getNewDir(file, Util.ZIP);
             fs.writeFileSync(dir, zip);
             vscode.window.showInformationMessage("Successfully extracted to " + path.basename(dir));
         });
@@ -91,22 +89,6 @@ function getNewDir(file, ext) {
         copyOf++;
     }
     return dir;
-}
-/**
- * @param {string} folder
- * @return {string[]}
- */
-function readdirCompletely(folder) {
-    let files = [];
-    fs.readdirSync(folder).forEach(file => {
-        let dir = path.join(folder, file);
-        if (fs.lstatSync(dir).isFile()) {
-            files.push(dir);
-        } else {
-            files.push(...readdirCompletely(dir));
-        }
-    });
-    return files;
 }
 
 module.exports = {
