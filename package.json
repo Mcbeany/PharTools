@@ -17,7 +17,8 @@
 		"onCommand:phartools.createPharFromFolder",
 		"onCommand:phartools.createPharFromZip",
 		"onCommand:phartools.extractPharToFolder",
-		"onCommand:phartools.extractPharToZip"
+		"onCommand:phartools.extractPharToZip",
+		"onLanguage:php"
 	],
 	"main": "./src/extension.js",
 	"contributes": {

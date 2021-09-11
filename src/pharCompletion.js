@@ -5,6 +5,25 @@ const Phar = require('phar');
 
 const Util = require('./util');
 
+const NORMAL = 0;
+const ABSTRACT = 1;
+const INTERFACE = 2;
+const FINAL = 3;
+const TRAIT = 4;
+
+class PhpClass {
+    /**
+     * @param {string} name 
+     * @param {string} namespace
+     * @param {number} type
+     */
+    constructor(name, namespace, type) {
+        this.name = name;
+        this.namespace = namespace;
+        this.type = type;
+    }
+}
+
 module.exports = {
 
     indexFiles() {

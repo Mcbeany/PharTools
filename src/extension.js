@@ -3,7 +3,6 @@ const vscode = require('vscode');
 const Conventer = require('./pharConventer');
 const Completion = require('./pharCompletion');
 const Util = require('./util');
-exports.currentPath = "";
 
 /**
  * @param {vscode.ExtensionContext} context
